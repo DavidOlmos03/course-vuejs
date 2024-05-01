@@ -47,8 +47,10 @@ import {computed } from 'vue'
                                         </thead>
                                         <tbody>
                                             <tr 
-                                                v-for="producto in carrito"                                              
+                                                v-for="producto in carrito" :key="producto"
+                                                                                              
                                             >
+                                            <!-- v-for="producto in carrito" -->
                                                 <td>
                                                     <img 
                                                     class="img-fluid" 

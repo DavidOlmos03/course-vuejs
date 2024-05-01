@@ -80,7 +80,7 @@ watch(carrito,()=>{
 
         <div class="row mt-5">
             <Guitarra 
-            v-for="guitarra in guitarras"
+            v-for="guitarra in guitarras" :key="guitarra"
             v-bind:guitarra="guitarra"    
             @agregar-carrito = "agregarCarrito"
             />
