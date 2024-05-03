@@ -1,15 +1,69 @@
 <script setup>
+    import {ref} from 'vue'
     import cerrarModal from '../assets/img/cerrar.svg'
+    import Alerta from '../components/Alerta.vue'
 
-    const emits = defineEmits(['cerrar-modal'])
+
+    const error = ref('')
+    const emits = defineEmits(['cerrar-modal','update:nombre','update:cantidad','update:categoria','guardar-gasto'])
     const props = defineProps(
         {
            modal:{
             type: Object,
             required: true
-           } 
+           },
+           nombre:{
+            type:String,
+            required:true
+           },
+           cantidad:{
+            type:[String,Number],
+            required:true
+           },
+           categoria:{
+            type:String,
+            required:true
+           },
+           disponible:{
+            type:Number,
+            required:true
+           }
         }
     )
+    
+    const agregarGasto = ()=>{
+        const {cantidad, categoria, nombre, disponible} = props
+        
+        //Validar que no haya campos vacios
+        
+        if([nombre,cantidad,categoria].includes('')){
+            error.value = 'Todos los campos son obligatorios'
+            setTimeout(()=>{
+                error.value = ''
+            },3000)
+            return
+        }
+        //Validar la cantidad
+        if (cantidad <= 0 ) {
+            error.value = 'Cantidad no válida'
+            setTimeout(()=>{
+                error.value = ''
+            },3000)
+            return
+        }
+
+        //Validar gastado
+        if(disponible < cantidad){
+            error.value = 'Has excedido el presupuesto'
+            setTimeout(()=>{
+                error.value = ''
+            },3000)
+            return
+        }
+
+        emits('guardar-gasto')
+
+    }
 </script>
 
 <template>
@@ -21,35 +75,46 @@
             alt="cerrar modal">
             
         </div>
+        
         <div 
         :class="[modal.animar ? 'animar' : 'cerrar']"
         class="contenedor contenedor-formulario"
             >
             <form
-            class="nuevo-gasto"
-        >
+                class="nuevo-gasto"
+                @submit.prevent="agregarGasto"
+            >
             <legend>Añadir Gasto</legend>
+            <Alerta v-if="error">{{ error }}</Alerta>
             <div class="campo">
                 <label for="nombre">Nombre Gasto:</label>
                 <input 
                     type="text"
                     id="nombre"
-                    placeholder="Añade el nombre del gasto"                   
+                    placeholder="Añade el nombre del gasto"
+                    :value="nombre" 
+                    @input="emits('update:nombre',$event.target.value)"              
                 >
             </div>
 
             <div class="campo">
                 <label for="cantidad">Cantidad:</label>
                 <input 
-                    type="text"
+                    type="number"
                     id="cantidad"
                     placeholder="Añade la cantidad del gasto"
+                    :value="cantidad"
+                    @input="emits('update:cantidad',+$event.target.value)"
                 >
             </div>
 
             <div class="campo">
                 <label for="categoria">Categoría:</label>
-                <select name="" id="categoria">
+                <select
+                    id="categoria"
+                    :value="categoria"
+                    @input="emits('update:categoria',$event.target.value)"
+                >
                     <option value="">-- Seleccione --</option>
                     <option value="ahorro">Ahorro</option>
                     <option value="comida">Comida</option>
@@ -60,7 +125,10 @@
                     <option value="suscripciones">Suscripciones</option>
                 </select>
             </div>
-            <input type="submit" value="Añadir Gastos">
+            <input 
+                type="submit" 
+                value="Añadir Gastos"              
+            >
         </form>
         </div>   
     </div>

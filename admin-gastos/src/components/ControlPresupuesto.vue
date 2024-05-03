@@ -9,10 +9,14 @@
         disponible:{
             type:Number,
             require:true
+        },
+        gastado:{
+            type:Number,
+            require:true
         }
     }
     )
-
+    
 </script>
 
 
@@ -28,11 +32,11 @@
             </p>
 
             <p>
-                <span>Disponible:</span> {{ formatearCantidad(disponible) }}
+                <span>Disponible:</span> {{ formatearCantidad(disponible)}}
             </p>
 
             <p>
-                <span>Gastado:</span> 0
+                <span>Gastado:</span>  {{ formatearCantidad(gastado) }}
             </p>
         </div>
     </div>
