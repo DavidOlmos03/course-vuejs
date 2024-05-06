@@ -9,6 +9,7 @@
     import IconoSuscripciones from '../assets/img/icono_suscripciones.svg'
 
 
+    const emits = defineEmits(['seleccionar-gasto'])
     const diccionarioIconos = {
         ahorro : IconoAhorro,
         comida : IconoComida,
@@ -38,7 +39,10 @@
             class="icono">
             <div class="detalles">
                 <p class="categoria">{{ gasto.categoria }}</p>
-                <p class="nombre">{{ gasto.nombre }}</p>
+                <p 
+                class="nombre"
+                @click="$emit('seleccionar-gasto',gasto.id)"
+                >{{ gasto.nombre }}</p>
                 <p class="fecha">Fecha
                     <span>{{ formatearFecha(gasto.fecha) }}</span></p>
             </div>

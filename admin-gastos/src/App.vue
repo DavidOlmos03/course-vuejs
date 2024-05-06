@@ -1,14 +1,16 @@
 <script setup>
-  import {ref, reactive,watch} from 'vue' 
+  import {ref, reactive,watch, computed,onMounted} from 'vue' 
   
   // import Filtro from './components/Filtro.vue'
   import {generarId} from './helpers'
 
+  
   import Gasto from './components/Gasto.vue'
   import Modal from './components/Modal.vue'
   import Presupuesto from './components/Presupuesto.vue'
   import ControlPresupuesto from './components/ControlPresupuesto.vue'
   import iconoNuevoGasto from './assets/img/nuevo-gasto.svg'
+  import Filtros from './components/Filtros.vue'
 
 
 
@@ -20,6 +22,7 @@
   const presupuesto = ref(0)
   const disponible = ref(0)
   const gastado = ref(0)
+  const filtro = ref('')
   const gasto = reactive(
     {
       nombre:'',
@@ -35,9 +38,42 @@
     const totalGastado = gastos.value.reduce((total,gasto)=>gasto.cantidad+total,0)
     gastado.value = totalGastado 
     disponible.value = presupuesto.value - totalGastado
+    localStorage.setItem('gastos',JSON.stringify(gastos.value))
   },{
     deep: true
   })
+  watch(modal,() =>{
+      if(!modal.mostrar){
+       reiniciarStateGasto()
+      }
+    },{deep:true}
+  )
+  watch(presupuesto,()=>{
+    localStorage.setItem('presupuesto',presupuesto.value)
+  })
+
+  onMounted(()=>{
+    const presupuestoStorage = localStorage.getItem('presupuesto')
+    if (presupuestoStorage) {
+      presupuesto.value = Number(presupuestoStorage)
+      disponible.value = Number(presupuestoStorage)
+    }
+    const gastosStorage = localStorage.getItem('gastos')
+    if (gastosStorage) {
+      gastos.value = JSON.parse(gastosStorage)
+    }
+  })
+  const reiniciarStateGasto = () =>{
+    Object.assign(gasto,
+      {
+        nombre:'',
+        cantidad:'',
+        categoria:'',
+        id:null,
+        fecha:Date.now()
+      }
+    )
+  }
   // const totalGastadoValue = ref('')
   const definirPresupuesto = (cantidad)=>{
     presupuesto.value = cantidad
@@ -52,45 +88,56 @@
     
   }
   const cerrarModal = ()=>{
+   
     modal.animar = false
     setTimeout(()=>{
       modal.mostrar = false
     },300)
-   
   }
 
   const guardarGasto = ()=>{
-    gastos.value.push({
+    if(gasto.id){
+      //Estamos editando
+      const {id} = gasto   //Para extraer el id de gasto
+      const i = gastos.value.findIndex((gasto => gasto.id === id))
+      gastos.value[i] = {...gasto}
+    }else{
+      //Es un registro nuevo
+      gastos.value.push({
       ...gasto,
       id:generarId(),
-      
     })
-    // for(gasto in gastos){
-    //   totalGastadoValue = totalGastadoValue + gasto.cantidad
-    // }
-    // console.log(totalGastadoValue)
+    }
     cerrarModal()
 
     //Reiniciar objeto
-    Object.assign(gasto,
-      {
-        nombre:'',
-        cantidad:'',
-        categoria:'',
-        id:null,
-        fecha:Date.now()
-      }
-    )
+    reiniciarStateGasto()
+  }
+  const eliminarGasto = ()=>{
 
+    //TAREA: Agregar sweet alert para controlar si se elimina o no el gasto
+    gastos.value = gastos.value.filter(gastoState => gastoState.id !== gasto.id)
+    cerrarModal()
   }
   
-  // const totalGastado = ()=>{
-  //   for(gasto in gastos){
-  //     totalGastadoValue = totalGastadoValue + gasto.value.cantidad
-  //   }
-  //   console.log(totalGastado)
-  // }
+  const seleccionarGasto = id =>{
+    const gastoEditar = gastos.value.filter(gasto => gasto.id === id)[0]
+    Object.assign(gasto,gastoEditar)
+    mostrarModal()
+  }
 
+  const gastosFiltrados = computed(()=>{
+    if(filtro.value){
+      return gastos.value.filter(gasto => gasto.categoria === filtro.value)
+    }else{
+      return gastos.value
+    }
+  })
+  const resetApp = ()=>{
+    //Agregar el sweet alert 2
+    gastos.value = []
+    presupuesto.value = 0
+  }
 </script>
 
 <template>
@@ -110,7 +157,7 @@
             :presupuesto ="presupuesto"
             v-bind:disponible="disponible"
             :gastado = "gastado"
-            
+            @reset-app = "resetApp"
           />
           <!-- <p v-else>Presupuesto valido</p> -->
         </div>
@@ -118,14 +165,16 @@
 
       <main
         v-if="presupuesto > 0"
-        
       >
+        <Filtros
+          v-model:filtro="filtro"
+        />
         <div class="listado-gastos contenedor">
-          <h2>{{ gastos.length > 0 ? 'Gastos' : 'No hay gastos' }}</h2>
+          <h2>{{ gastosFiltrados.length > 0 ? 'Gastos' : 'No hay gastos' }}</h2>
           <Gasto 
-            v-for="gasto in gastos" :key="gasto.id"
+            v-for="gasto in gastosFiltrados" :key="gasto.id"
             :gasto = "gasto"
-            
+            @seleccionar-gasto = "seleccionarGasto"
           />
         </div>
         <div class="crear-gasto">
@@ -139,11 +188,14 @@
             v-if="modal.mostrar === true"
             @cerrar-modal = "cerrarModal" 
             @guardar-gasto="guardarGasto"
+            @eliminar-gasto = "eliminarGasto"
             :modal = "modal"
+            :disponible = "disponible"
+            :id="gasto.id"
             v-model:nombre="gasto.nombre"
             v-model:categoria="gasto.categoria"
             v-model:cantidad="gasto.cantidad"
-            :disponible = "disponible"
+            
             
         />
       </main>
@@ -154,7 +206,7 @@
   :root {
     --azul:#3b82f6;
     --blanco: #fff;
-    --gris-claro: #F5F5F5;
+    --gris-claro: #f5f5f5b1;
     --gris:#94a3b8;
     --gris-oscuro: #64748b;
     --negro: #000;

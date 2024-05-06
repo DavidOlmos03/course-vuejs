@@ -1,11 +1,10 @@
 <script setup>
-    import {ref} from 'vue'
+    import {ref, computed} from 'vue'
     import cerrarModal from '../assets/img/cerrar.svg'
     import Alerta from '../components/Alerta.vue'
 
-
     const error = ref('')
-    const emits = defineEmits(['cerrar-modal','update:nombre','update:cantidad','update:categoria','guardar-gasto'])
+    const emits = defineEmits(['cerrar-modal','update:nombre','update:cantidad','update:categoria','guardar-gasto','eliminar-gasto'])
     const props = defineProps(
         {
            modal:{
@@ -27,12 +26,17 @@
            disponible:{
             type:Number,
             required:true
+           },
+           id:{
+            type:[String,null],
+            required:true
            }
         }
     )
-    
+    const old = props.cantidad
+    // console.log(props.id)
     const agregarGasto = ()=>{
-        const {cantidad, categoria, nombre, disponible} = props
+        const {cantidad, categoria, nombre, disponible, id} = props
         
         //Validar que no haya campos vacios
         
@@ -52,18 +56,35 @@
             return
         }
 
-        //Validar gastado
-        if(disponible < cantidad){
+        //Validar que el usuario no gaste mas de lo disponible
+        if (id) {
+            //Tomar en cuenta el gasto ya realizado
+            if (cantidad > old + disponible) {
+                
+                error.value = 'Has excedido el presupuesto'
+                setTimeout(()=>{
+                    error.value = ''
+                },3000)
+                return
+            }
+        } else {
+            if(disponible < cantidad){
             error.value = 'Has excedido el presupuesto'
             setTimeout(()=>{
                 error.value = ''
             },3000)
             return
+            }
         }
-
         emits('guardar-gasto')
 
     }
+
+    //Utilizando un computed property para ver si estoy editando y utilizar esto en el legend y el input
+    //Del boton para enviar el formulario, esto es para que el código quede mas limpio y "logico"
+    const isEditing = computed(()=>{
+        return props.id
+    })
 </script>
 
 <template>
@@ -84,7 +105,7 @@
                 class="nuevo-gasto"
                 @submit.prevent="agregarGasto"
             >
-            <legend>Añadir Gasto</legend>
+            <legend>{{isEditing ? 'Guardar Cambios':'Añadir Gasto'}}</legend>
             <Alerta v-if="error">{{ error }}</Alerta>
             <div class="campo">
                 <label for="nombre">Nombre Gasto:</label>
@@ -127,9 +148,17 @@
             </div>
             <input 
                 type="submit" 
-                value="Añadir Gastos"              
+                :value="[isEditing ? 'Guardar Cambios':'Añadir Gasto']"              
             >
         </form>
+            <button
+                type="button"
+                class="btn-eliminar"
+                v-if="isEditing"
+                @click="$emit('eliminar-gasto')"
+            >
+                Eliminar Gasto
+            </button>
         </div>   
     </div>
 </template>
@@ -201,5 +230,17 @@
         color: var(--blanco);
         font-weight: 700;
         cursor: pointer;
+    }
+    /* Boton de Eliminar Gasto */
+    .btn-eliminar{
+        border:none;
+        padding: 1rem;
+        width: 100%;
+        margin: 10rem 0 0 0;
+        background-color: #ef4444;
+        font-weight: 700;
+        font-size: 1.2rem;
+        color: var(--blanco);
+        cursor:pointer;
     }
 </style>
