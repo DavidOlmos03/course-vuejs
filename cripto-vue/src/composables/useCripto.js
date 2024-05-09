@@ -8,6 +8,7 @@ export default function useCripto(){
         { codigo: 'USD', texto: 'Dolar de Estados Unidos'},
         { codigo: 'MXN', texto: 'Peso Mexicano'},
         { codigo: 'EUR', texto: 'Euro'},
+        { codigo: 'COP', texto: 'Peso Colombiano'},
         { codigo: 'GBP', texto: 'Libra Esterlina'},
     ])
     const cotizacion = ref({}) //En este caso en particular se crea como ref y no con reactive dado que asi sea un objeto, no sabemos con certeza
