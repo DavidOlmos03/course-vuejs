@@ -43,8 +43,8 @@
    
     const handleSubmit = (data)=>{
        ClienteService.actualizarCliente(id, data)
-    //    .then(data => console.log(data))
-    //    .catch(error => console.log(error))
+       .then(() => router.push({name: 'listado-clientes'}))
+       .catch(error => console.log(error))
     }
 </script>
 

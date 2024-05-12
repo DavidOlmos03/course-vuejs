@@ -1,24 +1,32 @@
 {
   "clientes": [
     {
-      "id": "8883",
+      "id": "5e4b",
       "nombre": "Juan",
       "apellido": "Ruiz",
-      "email": "juanda_201001@hotmail.com",
+      "email": "prop1@correo.com",
       "telefono": "123-123-1234",
       "empresa": "Independiente",
       "puesto": "FullStack Developer",
-      "estado": 1
+      "estado": true
     },
     {
-        "id": "213",
-        "nombre": "Juan",
-        "apellido": "Ruiz",
-        "email": "juanda_201001@hotmail.com",
-        "telefono": "123-123-1234",
-        "empresa": "Independiente",
-        "puesto": "FullStack Developer",
-        "estado": 0
-      }
+      "id": "5e4b2",
+      "nombre": "Juan",
+      "apellido": "Ruiz",
+      "email": "prop1@correo.com",
+      "telefono": "123-123-1234",
+      "empresa": "Independiente",
+      "puesto": "FullStack Developer",
+      "estado": false
+    },
+    {
+      "id": "b4d0",
+      "nombre": "Juan - Actualizado",
+      "apellido": "Ruiz",
+      "email": "juanda_201001@hotmail.com",
+      "telefono": "123-123-1234",
+      "estado": true
+    }
   ]
 }

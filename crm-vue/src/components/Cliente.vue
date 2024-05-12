@@ -2,6 +2,7 @@
     import { computed } from 'vue';
     import { RouterLink } from 'vue-router';
     
+    defineEmits(['editar-estado','eliminar-cliente'])
     const props = defineProps({
         cliente:{
             type:Object
@@ -15,6 +16,15 @@
     const estadoCliente = computed(()=>{
         return props.cliente.estado
     })
+
+    // const cambiarEstado = ()=>{
+    //     if(estadoCliente){
+    //         props.cliente.estado = 0
+    //     }else{
+    //         props.cliente.estado = 1
+    //     }
+           
+    // }
 </script>
 
 <template>
@@ -31,6 +41,7 @@
             <button
                 class="inline-flex rounded-full px-2 text-xs font-semibold leading-5"
                 :class="[estadoCliente ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800']"
+                @click="$emit('editar-estado',{id:cliente.id, estado:cliente.estado})"
             >
                 {{ estadoCliente ? 'Activo' :'Inactivo' }}
             </button>
@@ -42,6 +53,7 @@
             >Editar</RouterLink>
             <button
                 class="text-red-600 hover:text-red-900"
+                @click="$emit('eliminar-cliente',cliente.id)"
             >Eliminar</button>
         </td>
     </tr>

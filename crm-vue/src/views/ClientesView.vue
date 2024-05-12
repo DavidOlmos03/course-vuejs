@@ -25,6 +25,23 @@
     const existenClientes = ()=>{
        return clientes.value.length > 0
     }
+
+    const actualizarEstado = ({id, estado})=>{
+        ClienteService.cambiarEstado(id, {estado: !estado})
+        .then(()=>{
+            const i = clientes.value.findIndex(cliente => cliente.id === id)
+            clientes.value[i].estado = !estado
+        })
+        .catch(error => console.log(error))
+    }
+    const deleteCliente = (id)=>{
+        ClienteService.deleteCliente(id)
+        .then(()=>{
+            clientes.value = clientes.value.filter(cliente => cliente.id !== id)
+        })
+        .catch(error => console.log(error))
+        // console.log('Eliminando cliente...', id)
+    }
 </script>
 <template>
     <div>
@@ -54,6 +71,8 @@
                             <Cliente
                                 v-for="cliente in clientes" :key="cliente.id"
                                 :cliente = "cliente"
+                                @editar-estado = "actualizarEstado"
+                                @eliminar-cliente = "deleteCliente"
                             >
 
                             </Cliente>
