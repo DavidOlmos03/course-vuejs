@@ -1,0 +1,2 @@
+JSON Server: para crear APIs REST
+	json-server --watch db.json port 4000

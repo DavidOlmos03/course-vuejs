@@ -1,0 +1,24 @@
+{
+  "clientes": [
+    {
+      "id": "8883",
+      "nombre": "Juan",
+      "apellido": "Ruiz",
+      "email": "juanda_201001@hotmail.com",
+      "telefono": "123-123-1234",
+      "empresa": "Independiente",
+      "puesto": "FullStack Developer",
+      "estado": 1
+    },
+    {
+        "id": "213",
+        "nombre": "Juan",
+        "apellido": "Ruiz",
+        "email": "juanda_201001@hotmail.com",
+        "telefono": "123-123-1234",
+        "empresa": "Independiente",
+        "puesto": "FullStack Developer",
+        "estado": 0
+      }
+  ]
+}
