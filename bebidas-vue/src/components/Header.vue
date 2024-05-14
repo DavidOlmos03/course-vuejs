@@ -30,17 +30,17 @@
                         <img class="w-32" src="/img/logo.svg"  alt="">
                     </RouterLink>
                 </div>
-                <nav class="flex gap-4">  <!--gap-4 para separar elementos-->
+                <nav class="flex gap-4 text-white">  <!--gap-4 para separar elementos-->
                     <RouterLink 
                     :to="{name:'inicio'}"
-                    class="text-white uppercase font-bold"
+                    class="uppercase font-bold"
                     active-class="text-orange-500"
                     >
                         <h6>Inicio</h6>
                     </RouterLink>
                     <RouterLink 
                     :to="{name:'favoritos'}"
-                    class="text-white uppercase font-bold"
+                    class="uppercase font-bold"
                     active-class="text-orange-500"
                     >
                         <h6>Favoritos</h6>
