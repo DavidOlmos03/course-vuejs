@@ -34,14 +34,14 @@
                     <RouterLink 
                     :to="{name:'inicio'}"
                     class="text-white uppercase font-bold"
-                    active-class="text-orange-400"
+                    active-class="text-orange-500"
                     >
                         <h6>Inicio</h6>
                     </RouterLink>
                     <RouterLink 
                     :to="{name:'favoritos'}"
                     class="text-white uppercase font-bold"
-                    active-class="text-orange-400"
+                    active-class="text-orange-500"
                     >
                         <h6>Favoritos</h6>
                     </RouterLink>

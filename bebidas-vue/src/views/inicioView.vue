@@ -3,6 +3,7 @@
     import { useBebidaStore } from '../stores/bebidas';
 
     const bebidas = useBebidaStore()
+   
 </script>
 
 <template>
