@@ -3,17 +3,39 @@
     import { computed } from 'vue'
     import {RouterLink, useRoute} from 'vue-router'
     import {useBebidaStore} from '../stores/bebidas'
+    import { useNotificacionStore } from '../stores/notificaciones'
 
 
     const route = useRoute()
     const store = useBebidaStore()   // OBS. Es importante aqui al llamar el store nunca aplicar destruction {}, porque esto rompería la reactividad
-
+    const notificaciones = useNotificacionStore()
     const paginaInicio = computed(()=> route.name === 'inicio')
+    
 
     const handleSubmit = ()=>{
-        // console.log('Enviando..')
-        console.log(store.obtenerRecetas())
-        //TO DO
+        //TO DO: Validar
+        if(Object.values(store.busqueda).includes('')){
+            // Option 1
+            // notificaciones.texto = 'Todos los campos son obligatorios'
+            // notificaciones.mostrar = true
+            // notificaciones.error = true
+
+            // Option 2
+            // notificaciones.$state = {
+            //     texto: 'Todos los campos son obligatorios',
+            //     mostrar: true,
+            //     error: true
+            // }
+
+            // Option 3
+            notificaciones.$patch({
+                texto: 'Todos los campos son obligatorios',
+                mostrar: true,
+                error: true
+            })
+            return
+        }
+        store.obtenerRecetas()
     }
 </script>
 <template>
