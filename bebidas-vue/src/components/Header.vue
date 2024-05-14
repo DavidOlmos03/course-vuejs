@@ -9,6 +9,12 @@
     const store = useBebidaStore()   // OBS. Es importante aqui al llamar el store nunca aplicar destruction {}, porque esto rompería la reactividad
 
     const paginaInicio = computed(()=> route.name === 'inicio')
+
+    const handleSubmit = ()=>{
+        // console.log('Enviando..')
+        console.log(store.obtenerRecetas())
+        //TO DO
+    }
 </script>
 <template>
    <header
@@ -25,25 +31,26 @@
                     </RouterLink>
                 </div>
                 <nav class="flex gap-4">  <!--gap-4 para separar elementos-->
-                    <router-link 
+                    <RouterLink 
                     :to="{name:'inicio'}"
                     class="text-white uppercase font-bold"
-                    active-class="text-orange-500"
+                    active-class="text-orange-400"
                     >
                         <h6>Inicio</h6>
-                    </router-link>
-                    <router-link 
+                    </RouterLink>
+                    <RouterLink 
                     :to="{name:'favoritos'}"
                     class="text-white uppercase font-bold"
-                    active-class="text-orange-500"
+                    active-class="text-orange-400"
                     >
                         <h6>Favoritos</h6>
-                    </router-link>
+                    </RouterLink>
                 </nav>
             </div>
             <form
             class="md:w-1/2 2xl:w-1/3 bg-orange-400 my-32 p-10 rounded-lg shadow space-y-6"
             v-if="paginaInicio"
+            @submit.prevent="handleSubmit"
         >
             <div class="space-y-4">  <!--Agrega separación a los elementos hijos-->
                 <label 
@@ -54,6 +61,7 @@
                     type="text"
                     class="p-3 w-full rounded-lg focus:outline-none"
                     placeholder="Nombre o Ingrediente: ej.Vodka, Tequila, etc"
+                    v-model="store.busqueda.nombre"
                 >
             </div>
             <div class="space-y-4">  <!--Agrega separación a los elementos hijos-->
@@ -63,6 +71,7 @@
                 <select 
                     id="categoria"
                     class="p-3 w-full rounded-lg focus:outline-none"
+                    v-model="store.busqueda.categoria"
                 >
                     <option value="">--Seleccione--</option>
                     <option
