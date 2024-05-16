@@ -1,10 +1,13 @@
 import { defineStore } from 'pinia'
 import { useFirebaseAuth } from 'vuefire'
 import { signInWithEmailAndPassword }  from 'firebase/auth'
+import {ref, computed} from 'vue'
+
 
 export const useAuthStore = defineStore('auth', ()=>{
     const auth = useFirebaseAuth()
 
+    const errorMsg = ref('')
     const errorCodes = {
         'auth/invalid-credential' : 'Credenciales invalidas'
     }
@@ -15,13 +18,21 @@ export const useAuthStore = defineStore('auth', ()=>{
             console.log(userCredential)
         })
         .catch((error)=>{
-            console.log(errorCodes[error.code])
+            errorMsg.value = errorCodes[error.code]
         })
     }
 
+    const hasError = computed(()=>{
+        setTimeout(()=>{
+            errorMsg.value = '' 
+        },3000)
+        return errorMsg.value
+    })
 
     return {
-        login
+        login,
+        hasError,
+        errorMsg
     }
 
 })
