@@ -33,7 +33,6 @@ import { RouterLink, RouterView } from 'vue-router'
         >
          Iniciar Sesión
         </v-btn>
-        
       </template>
       </v-app-bar>
       <v-main>
