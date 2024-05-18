@@ -12,7 +12,7 @@
 
     
 
-    const {zoom, center} = useLocationMap()
+    const {zoom, center, pin} = useLocationMap()
     // Va a nuestras variables de entorno para poder obtener las referencias de nuestro proyecto en cloud fire store
     const db = useFirestore()
 
@@ -47,7 +47,8 @@
         // Add a new document with a generated id (https://firebase.google.com/docs/firestore/manage-data/add-data?hl=es-419).
         const docRef = await addDoc(collection(db, "propiedades"), {
             ...propiedad,
-            imagen: url.value 
+            imagen: url.value,
+            ubicacion: center.value 
         });
         if (docRef.id) {
             // console.log('redirigiendo...')
@@ -178,6 +179,7 @@
             <LMarker 
                 :lat-lng="center"
                 draggable
+                @moveend="pin"
             />
 
                 <LTileLayer
