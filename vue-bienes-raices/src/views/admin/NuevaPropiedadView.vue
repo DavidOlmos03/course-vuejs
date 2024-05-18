@@ -6,11 +6,17 @@
     import {validationSchema, imageSchema} from '@/validation/propiedadSchema'  // El arroba esta definido para src en vite.config.js
     import { collection, addDoc } from "firebase/firestore";
     import useImage from '@/composables/useImage'
+    import useLocationMap  from '@/composables/useLocationMap'
+    import "leaflet/dist/leaflet.css";
+    import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+
     
+
+    const {zoom, center} = useLocationMap()
     // Va a nuestras variables de entorno para poder obtener las referencias de nuestro proyecto en cloud fire store
     const db = useFirestore()
 
-    const {uploadImage} = useImage()
+    const {uploadImage,image,url} = useImage()
     
     const router = useRouter()
     // Aqui se dejan en uno solo validationSchema e imageSchema
@@ -40,7 +46,8 @@
         const {imagen, ...propiedad} = values
         // Add a new document with a generated id (https://firebase.google.com/docs/firestore/manage-data/add-data?hl=es-419).
         const docRef = await addDoc(collection(db, "propiedades"), {
-            ...propiedad 
+            ...propiedad,
+            imagen: url.value 
         });
         if (docRef.id) {
             // console.log('redirigiendo...')
@@ -86,6 +93,14 @@
                 :error-messages="imagen.errorMessage.value"
                 @change="uploadImage"
             />
+            <div v-if="image" class="my-5">
+                <p class="font-weight-bold">Imagen Propiedad:</p>
+
+                <v-row justify="center" class="my-3">
+                    <img :src="image" alt="" class="w-50 mx-auto">
+                </v-row>
+                
+            </div>
             <v-text-field 
                 class="mb-5"
                 bg-color="blue-grey-lighten-5"
@@ -154,6 +169,22 @@
                 />
             </v-col>
         </v-row>
+        <h2 class="font-weight-bold text-center my-5">Ubicacion</h2>
+        <div style="height:600px;" class="pb-3">
+            <LMap 
+            v-model:zoom="zoom" 
+            :center="center" 
+            :use-global-leaflet="false">
+            <LMarker 
+                :lat-lng="center"
+                draggable
+            />
+
+                <LTileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                ></LTileLayer>
+            </LMap>
+        </div>
         <v-btn
             class="mb-5"
             color="pink-accent-3"
