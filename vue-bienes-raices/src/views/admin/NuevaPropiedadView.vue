@@ -5,10 +5,13 @@
     import { useRouter } from 'vue-router';
     import {validationSchema, imageSchema} from '@/validation/propiedadSchema'  // El arroba esta definido para src en vite.config.js
     import { collection, addDoc } from "firebase/firestore";
-
+    import useImage from '@/composables/useImage'
+    
     // Va a nuestras variables de entorno para poder obtener las referencias de nuestro proyecto en cloud fire store
     const db = useFirestore()
 
+    const {uploadImage} = useImage()
+    
     const router = useRouter()
     // Aqui se dejan en uno solo validationSchema e imageSchema
     const { handleSubmit} = useForm({
@@ -81,6 +84,7 @@
                 accept="image/jpeg"
                 v-model="imagen.value.value"
                 :error-messages="imagen.errorMessage.value"
+                @change="uploadImage"
             />
             <v-text-field 
                 class="mb-5"
