@@ -1,8 +1,10 @@
 <script setup>
+    import { ref } from 'vue';
     import {useForm, useField} from 'vee-validate'
     import { useAuthStore } from '../stores/auth'
     import { loginSchema as validationSchema } from '../validation/loginSchema'
 
+    const defaulEmail = 'correo@correo.com'
 
     const {handleSubmit} = useForm({validationSchema})
     const auth = useAuthStore()
@@ -35,6 +37,11 @@
         >
             Inicia Sesión con tu cuenta
         </v-card-subtitle>
+        <v-card flat>
+            <div style="color: #F50057;">
+                Usa la cuenta correo@correo.com y contraseña password para continuar.
+            </div>
+        </v-card>
         <v-alert
             v-if="auth.hasError"
             class="my-5"
@@ -45,6 +52,7 @@
             <v-text-field 
                 type="email"
                 label="Email"
+                formControlName="email"
                 bg-color="blue-grey-lighten-5"
                 class="mb-3"
                 v-model="email.value.value"
