@@ -27,17 +27,18 @@ const router = createRouter({
       meta:{requiresAuth:true},   //route meta field para agregar información extra a una ruta
       children:[
         {
-          path:'/admin/propiedades',
+          // path:'/admin/propiedad' es una opción pero al ser hija de admin se puede quitar /admin/
+          path:'propiedades',
           name:'admin-propiedades',
           component: ()=>import('../views/admin/AdminView.vue'),
         },
         {
-          path:'/admin/nueva',
+          path:'nueva',
           name:'nueva-propiedad',
           component: ()=>import('../views/admin/NuevaPropiedadView.vue')
         },
         {
-          path:'/admin/editar/:id',
+          path:'editar/:id',
           name:'editar-propiedad',
           component: ()=>import('../views/admin/EditarPropiedadView.vue')
         }
