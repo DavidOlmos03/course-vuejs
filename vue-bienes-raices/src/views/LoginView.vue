@@ -60,7 +60,7 @@
             />
             <v-text-field 
                 type="password"
-                label="Pasword"
+                label="Password"
                 bg-color="blue-grey-lighten-5"
                 class="mb-3"
                 v-model="password.value.value"

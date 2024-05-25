@@ -3,6 +3,8 @@ import { useFirebaseAuth } from 'vuefire'
 import { signInWithEmailAndPassword, onAuthStateChanged, signOut }  from 'firebase/auth'
 import {ref, computed, onMounted} from 'vue'
 import { useRouter } from 'vue-router'
+import Swal from 'sweetalert2'
+
 
 export const useAuthStore = defineStore('auth', ()=>{
     
@@ -39,15 +41,27 @@ export const useAuthStore = defineStore('auth', ()=>{
     }
     // Para cerrar sesion
     const logOut = ()=>{
-        signOut(auth)
-        .then(()=>{
-            authUser.value = null
-            // Redirecionar el usuario al login al cerrar sesión
-            router.push({name:'login'})
-        })
-        .watch(error=>{
-            console.log(error)
-        })
+        Swal.fire({
+            title: "¿Estas seguro?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            cancelButtonText:"Cancelar",
+            confirmButtonText: "Si, salir!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+                signOut(auth)
+                .then(()=>{
+                    authUser.value = null
+                    // Redirecionar el usuario al login al cerrar sesión
+                    router.push({name:'login'})
+                })
+                .watch(error=>{
+                    console.log(error)
+                })
+            }
+          });
     }
 
     const hasError = computed(()=>{

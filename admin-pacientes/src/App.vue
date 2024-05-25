@@ -4,7 +4,8 @@
   import Header from './components/Header.vue'
   import Formulario from './components/Formulario.vue'
   import Paciente from './components/Paciente.vue'
-
+  // sweetAlert2
+  import Swal from 'sweetalert2';
   //array
   const pacientes = ref([])
 
@@ -71,7 +72,27 @@
   }
 
   const eliminarPaciente = (id) =>{
-    pacientes.value = pacientes.value.filter(pacienteState => pacienteState.id !== id)
+    Swal.fire({
+      title: "Estas seguro?",
+      text: "No sera posible revertir tu elección!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText:"Cancelar",
+      confirmButtonText: "Si, eliminar"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        pacientes.value = pacientes.value.filter(pacienteState => pacienteState.id !== id)
+        Swal.fire({
+          title: "Eliminado!",
+          text: "El paciente ha sido eliminado.",
+          icon: "success"
+        });
+      }
+    });
+
+
   }
 </script>
 
