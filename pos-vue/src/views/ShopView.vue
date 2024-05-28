@@ -3,6 +3,7 @@
     import { storeToRefs } from 'pinia';
     import MainNav from '@/components/MainNav.vue';
     import ProductCard from '@/components/ProductCard.vue';
+    import ShoppingCart from '@/components/ShoppingCart.vue';
     import { useProductsStore } from '@/stores/products';
 
     // Obs. para poder aplicar destruction en las funciones de products, debo importar storeToRefs de Pinia, para que no se pierda la
@@ -21,7 +22,7 @@
                 
                 <div 
                     v-else
-                    class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-5"
+                    class="grid grid-cols-1 lg:grid-cols-3 2xl:grid-cols-3 gap-5"
                 >
                     <ProductCard 
                         v-for="product in filteredProducts"
@@ -31,8 +32,8 @@
                     />
                 </div>
             </div>
-            <aside class="lg:w-1/3 lg:screen lg:overflow-y-scroll pt-10 pb-32 px-10">
-                <p>Carrito aquí</p>
+            <aside class="lg:w-1/3 lg:screen lg:overflow-y-scroll pt-20 pb-32 px-10">
+                <ShoppingCart />
             </aside>
         </main>
     </div>
