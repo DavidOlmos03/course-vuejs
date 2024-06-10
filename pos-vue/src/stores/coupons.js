@@ -49,6 +49,12 @@ export const useCouponStore = defineStore('coupon', ()=>{
         },6000)
     }
 
+    function $reset(){
+        couponInput.value = ''
+        couponValidationMessage.value = ''
+        discountPercentage.value = 0
+        discount.value = 0
+    }
     // Para verificar si ya se aplico un descuento 
     const isValidCoupon = computed(()=> discountPercentage.value > 0)
 
@@ -57,6 +63,7 @@ export const useCouponStore = defineStore('coupon', ()=>{
         discount,
         applyCoupon,
         couponValidationMessage,
-        isValidCoupon
+        isValidCoupon,
+        $reset
     }
 })
