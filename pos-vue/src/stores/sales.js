@@ -20,15 +20,19 @@ export const useSalesStore = defineStore('sales', ()=>{
     })
 
     const salesCollection = useCollection(salesSource)
-
+    // Para cuando se selecciona una fecha y mostrar la fecha, en SalesView
     const isDateSelected = computed(()=> date.value)
-
-    const noSales = computed(()=> !salesCollection.length && date.value)
-
+    // Para cuando no existen ventas ese día, se utiliza en SalesView
+    const noSales = computed(()=> salesCollection.length && date.value)
+    // Calcular el total de ventas en el día seleccionado
+    const totalSalesOfDay = computed(()=>{
+        return salesCollection.value ? salesCollection.value.reduce((total, sale) => total + sale.total, 0) : 0
+    })
     return {
         date,
         isDateSelected,
         salesCollection,
-        noSales
+        noSales,
+        totalSalesOfDay
     }
 })

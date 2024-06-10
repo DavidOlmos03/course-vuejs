@@ -4,7 +4,7 @@
     import VueTailwindDatePicker from 'vue-tailwind-datepicker'
     import {useSalesStore} from '@/stores/sales'
     import SalesDetailsVue from '@/components/SalesDetails.vue';
-
+    import { formatCurrency } from '@/helper';
     const sales = useSalesStore()
 
     const formatter = ref({
@@ -46,6 +46,11 @@
 
                <!-- Para el cargue de los productos desde firestore -->
                 <div class="space-y-5" v-if="sales.salesCollection.length">
+                    <!-- Se muestra el total del día -->
+                    <p class="text-right text-2xl">Total del día: 
+                        <span class="font-black">{{ formatCurrency(sales.totalSalesOfDay) }}</span>
+                    </p>
+                    <!-- Inicio lista de articulos vendidos -->
                     <SalesDetailsVue 
                         v-for="sale in sales.salesCollection"
                         :key="sale.id"
@@ -56,7 +61,7 @@
 
             </div>
             <!-- Fin lista productos vendidos -->
-
+            
         </div>
     </div>
 </template>
