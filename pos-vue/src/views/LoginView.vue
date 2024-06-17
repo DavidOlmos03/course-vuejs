@@ -16,7 +16,13 @@
     })
 </script>
 <template>
-     <v-card
+    <v-card
+        elevation="10"
+        max-width="1200"
+        min-height="500"
+        class="mx-auto mt-20"
+    >
+    <v-card
         flat
         max-width="600"
         class="mx-auto my-10"
@@ -71,5 +77,8 @@
             </v-btn>
         </v-form>
     </v-card>
+
+    </v-card>
+     
 </template>
 

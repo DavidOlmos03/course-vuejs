@@ -32,7 +32,7 @@ export const useAuthStore = defineStore('auth', ()=>{
             const user = userCredential.user
             authUser.value = user
             // Redirecionar el usuario al login al iniciar sesión
-            router.push({name:'admin-propiedades'})
+            router.push({name:'admin'})
             
         })
         .catch((error)=>{

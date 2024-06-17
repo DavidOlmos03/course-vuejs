@@ -34,7 +34,7 @@
         </div>
         <nav>
             <Link
-                to="admin"
+                to="login"
             >
                 Administrar
             </Link>
