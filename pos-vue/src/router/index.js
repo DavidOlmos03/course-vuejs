@@ -10,6 +10,11 @@ const router = createRouter({
       component: ShopView
     },
     {
+      path:'/login',
+      name:'login',
+      component: ()=>import('../views/LoginView.vue')
+    },
+    {
       path:'/admin',
       name:'admin',
       component: AdminLayout,
