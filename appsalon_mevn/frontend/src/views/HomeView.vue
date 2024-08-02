@@ -4,6 +4,6 @@
 
 <template>
   <main>
-    <h1>App salon</h1>
+    <h1 class="">App salon</h1>
   </main>
 </template>
