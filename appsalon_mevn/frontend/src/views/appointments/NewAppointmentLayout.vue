@@ -24,6 +24,8 @@ import { useRouter } from 'vue-router';
                 Cita y Resumen
             </RouterLink>
         </nav>
-        <RouterView/>
+        <div class="space-y-5">
+            <RouterView/>
+        </div>
     </div>
 </template>
