@@ -2,6 +2,8 @@
 
 import mongoose from "mongoose"
 
+const uniqueId = () => Date.now().toString(32) + Math.random().toString(32).substring(2)
+
 function validateObjectId(id,res){
     if (!mongoose.Types.ObjectId.isValid(id)) {
         const error = new Error('El ID no es valido')
@@ -18,7 +20,9 @@ function hundleNotFoundError(message, res){
     })
 }
 
+
 export {
+    uniqueId,
     validateObjectId,
     hundleNotFoundError
 }

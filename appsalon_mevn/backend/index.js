@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import {db} from './config/db.js'
 import servicesRoutes from './routes/servicesRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 
 // Variables de entorno
 dotenv.config()
@@ -42,6 +43,7 @@ app.use(cors(corsOptions))
 // Definir una ruta
 // use se utiliza para hacer referencia a cualquier tipo de peticion (DELETE, POST, GET..)
 app.use('/api/services',servicesRoutes)
+app.use('/api/auth',authRoutes)
 
 //  Definir puerto
 //  process.env.PORT  es para cuendo este en un hosting, mientras este en local el puerto sera 4000
