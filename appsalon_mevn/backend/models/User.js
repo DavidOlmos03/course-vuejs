@@ -48,6 +48,12 @@ userSchema.pre('save', async function (next) {
 })
 
 
+// Comprobación de password
+// Se agrega un metodo llamado checkPassword a userSchema
+userSchema.methods.checkPassword = async function(inputPassword){
+    return await bcrypt.compare(inputPassword, this.password)
+}
+
 // Definimos el modelo 
 const User = mongoose.model('User', userSchema)
 
