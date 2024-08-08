@@ -12,8 +12,8 @@ router.post('/login', login)
  
 // Area Privada - Requiere un JWT
 // Aqui es donde se utiliza el middleware para verificar que el usuario este autenticado
-// Estas funciones se ejecutan en el orden que son agregadas entonces, primero se va a ejecutar el authMiddleware y luego el user, se pasa de
-// una funcion (o middleware) a otra por medio del next dentro de la función 
+// Estas funciones se ejecutan en el orden que son agregadas, entonces, primero se va a ejecutar el authMiddleware y luego el user, se pasa de
+// una funcion (o middleware) a otra por medio del next() dentro de la función 
 router.get('/user',authMiddleware, user) 
 
 export default router
