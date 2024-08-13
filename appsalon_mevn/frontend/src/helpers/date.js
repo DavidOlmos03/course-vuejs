@@ -13,3 +13,10 @@ export function displayDate(date){
     const formatedDate = format(newDate,'PPPP',{locale:es})
     return formatedDate
 }
+
+
+export function converToDDMMYYYY(isoDate){
+    const newDate = new Date(isoDate)
+    const formatedDate = format(newDate, 'dd/MM/yyyy')
+    return formatedDate
+}
