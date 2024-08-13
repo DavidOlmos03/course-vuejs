@@ -22,7 +22,7 @@ const createAppointment = async  (req, res)=>{
 const getAppointmetsByDate = async (req, res) => {
     const {date} = req.query
 
-    console.log(date)
+    // console.log(date)
     const newDate = parse(date, 'dd/MM/yyyy', new Date())
 
     if (!isValid(newDate)) {
