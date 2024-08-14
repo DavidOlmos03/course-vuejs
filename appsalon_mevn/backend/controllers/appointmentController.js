@@ -103,9 +103,39 @@ const updateAppointment = async (req, res)=>{
     }
 }
 
+const deleteAppointment = async (req, res)=>{
+    const {id} = req.params
+
+    // Validar por object id
+    if (validateObjectId(id,res)) return
+
+    // Validar que exista
+    const appointment = await Appointment.findById(id).populate('services')
+
+    if (!appointment) {
+        return hundleNotFoundError('La Cita no existe', res)
+    }
+
+    // Evitar que otros usuarios puedan acceder a citas que no han creado o no les pertenecen
+    // console.log(appointment.user.toString())  (Usuario al que pertenece la cita) 
+    // console.log(req.user._id.toString()) (Usuario autenticado)
+    if (appointment.user.toString() !== req.user._id.toString()) {
+        const error = new Error('No tienes los permisos')
+        return res.status(403).json({msg: error.message})
+    }
+
+    try {
+        await appointment.deleteOne()
+        res.json({msg:'Cita cancelada exitosamente'})
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export {
     createAppointment,
     getAppointmetsByDate,
     getAppointmetsById,
-    updateAppointment
+    updateAppointment,
+    deleteAppointment
 }
